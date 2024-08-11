@@ -111,11 +111,11 @@ int main() {
 	char* str;
 	// Initializations
 	io_init();
-    init_composite(27);
+    init_composite(NTSC_VIDEO_OUT);
 	timer_init();
 	sleep_ms(500);
 	stdio_init_all();
-	display_init();
+//	display_init();
 	init_buttons();
 	init_file_system();
 	fileselect_init();

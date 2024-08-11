@@ -1,5 +1,5 @@
 /*
-	Configuration file for Raspberry Pi Pico + ILI9341 LCD + MMC card
+	Configuration file for Raspberry Pi Pico + NTSC Video + MMC card
 
 	Peripheral assignment
 
@@ -13,12 +13,12 @@
 	GP7 I/O bit7 / I2C SCL
 	GP8 I/O bit8 / button1 (UP)
 	GP9 I/O bit9 / button2 (LEFT)
-	GP10 LCD-DC
-	GP11 LCD-RESET
-	GP12 LCD-MISO
-	GP13 LCD-CS
-	GP14 LCD-SCK
-	GP15 LCD-MOSI
+	GP10 
+	GP11 
+	GP12 
+	GP13 
+	GP14 
+	GP15 
 	GP16 SD-DO(MISO) / SPI RX (pulled up by a 10k ohm resistor)
 	GP17 SD-CS
 	GP18 SD-SCLK / SCK
@@ -27,7 +27,7 @@
 	GP21 I/O bit11 / button4 (DOWN)
 	GP22 I/O bit12 / button5 (START)
 	GP26 I/O bit13 / button6 (FIRE) / ADC0
-	GP27 I/O bit14 / ADC1
+	GP27 NTSC Video out
 	GP28 I/O bit15 / SOUND OUT / ADC2
 	GP29 ADC3
 */
@@ -89,18 +89,7 @@
 #define AUDIO_SLICE 6
 #define AUDIO_CHAN PWM_CHAN_A
 
-// LCD settings
-#define LCD_CS 13
-#define LCD_DC 10
-#define LCD_RESET 11
-#define LCD_SPI_TX 15
-#define LCD_SPI_RX 12
-#define LCD_SPI_SCK 14
-#define LCD_SPICH spi1
-#define LCD_COLUMN_RES 240
-#define LCD_ROW_RES 320
-#define LCD_SPI_BAUDRATE (32*1000*1000)
-#define LCD_SPI_BAUDRATE_R (15*1000*1000)
+#define NTSC_VIDEO_OUT 27
 
 // File system SPI settings
 #define SD_SPI_CS 17
