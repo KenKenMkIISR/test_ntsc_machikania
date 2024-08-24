@@ -18,7 +18,7 @@
 	GP12 
 	GP13 
 	GP14 
-	GP15 
+	GP15 NTSC Video out
 	GP16 SD-DO(MISO) / SPI RX (pulled up by a 10k ohm resistor)
 	GP17 SD-CS
 	GP18 SD-SCLK / SCK
@@ -27,14 +27,14 @@
 	GP21 I/O bit11 / button4 (DOWN)
 	GP22 I/O bit12 / button5 (START)
 	GP26 I/O bit13 / button6 (FIRE) / ADC0
-	GP27 NTSC Video out
+	GP27 I/O bit14 / ADC1
 	GP28 I/O bit15 / SOUND OUT / ADC2
 	GP29 ADC3
 */
 
 //                     31     24      16       8       0
 //                      |      |       |       |       |
-#define GPIO_ALL_MASK 0b00010100011100000000001111111111
+#define GPIO_ALL_MASK 0b00011110011100000111111111111111
 
 // IO settings
 #define IO_SPI_CS 3
@@ -69,12 +69,26 @@
 #define IO_GPIO7  7
 #define IO_GPIO8  8
 #define IO_GPIO9  9
-#define IO_GPIO10 20
-#define IO_GPIO11 21
-#define IO_GPIO12 22
-#define IO_GPIO13 26
-#define IO_GPIO14 27
-#define IO_GPIO15 28
+#define IO_GPIO10 10
+#define IO_GPIO11 11
+#define IO_GPIO12 12
+#define IO_GPIO13 13
+#define IO_GPIO14 14
+#define IO_GPIO15 15
+#define IO_GPIO16 16
+#define IO_GPIO17 17
+#define IO_GPIO18 18
+#define IO_GPIO19 19
+#define IO_GPIO20 20
+#define IO_GPIO21 21
+#define IO_GPIO22 22
+#define IO_GPIO23 23
+#define IO_GPIO24 24
+#define IO_GPIO25 25
+#define IO_GPIO26 26
+#define IO_GPIO27 27
+#define IO_GPIO28 28
+#define IO_GPIO29 29
 
 // Buttons settings
 #define GPIO_KEYUP 8
@@ -89,7 +103,7 @@
 #define AUDIO_SLICE 6
 #define AUDIO_CHAN PWM_CHAN_A
 
-#define NTSC_VIDEO_OUT 27
+#define NTSC_VIDEO_OUT 15
 
 // File system SPI settings
 #define SD_SPI_CS 17

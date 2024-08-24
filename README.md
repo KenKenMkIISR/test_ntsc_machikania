@@ -1,27 +1,27 @@
-# phyllosoma
-MachiKania Phyllosoma
+# test NTSC MachiKania
+MachiKania RP2040 Video
 
-## MachiKania Phyllosoma
-MachiKania Phyllosoma is a BASIC compiler for ARMv6-M, especially for Raspberry Pi Pico.
+## MachiKania RP2040 Video
+MachiKania RP2040 Video is a BASIC compiler for ARMv6-M, especially for Raspberry Pi Pico, Pico W, XIAO RP2040, Tiny 2040 and RP2040-Zero.  
+MachiKania RP2040 Video is currently an experimental project. Hardware specifications may change in the future.  
+This project is being developed by modifying MachiKania type P (code name Phyllosoma), so many documents and scripts still contain references to Phyllosoma.
 
 ## how to compile
 cmake and make. The pico-sdk (ver 1.5.0 is confirmed for building) with tinyusb (ver 0.15.0 is confirmed for building), cyw43-driver, lwip, and mbedtls submodules is required. In config.cmake, select configuration option to build by enabling "set()" command. Currently, there are following options:  
   
-1. set(MACHIKANIA_BUILD pico_ili9341) : for Raspberry Pi Pico + ILI9341 LCD  
-2. set(MACHIKANIA_BUILD pico_ili9488) : for Raspberry Pi Pico + ILI9488 LCD  
-3. set(MACHIKANIA_BUILD xiao_embed) : for Seeed XIAO RP2040 for embedded development  
-4. set(MACHIKANIA_BUILD pico_w_ili9341) : for Raspberry Pi Pico W + ILI9341 LCD + Wifi  
-5. set(MACHIKANIA_BUILD pico_w_ili9488) : for Raspberry Pi Pico W + ILI9488 LCD + Wifi
+1. set(MACHIKANIA_BUILD pico_ntsc) : for Raspberry Pi Pico
+2. set(MACHIKANIA_BUILD xiao_ntsc) : for XIAO RP2040, Tiny 2040 and RP2040-Zero
+3. #set(MACHIKANIA_BUILD pico_w_ntsc) : for Raspberry Pi Pico W
 
 ## how to use
-Copy "phyllosoma.uf2" to the RPI-RP2 drive of Raspberry Pi Pico or Pico W. Immediately connect to COMx port (com number depends on environment) by serial console at 115200 baud rate, if needed. Alternatively, copy "phyllosoma_kb.uf2" to the RPI-RP2 drive for using USB keyboard directly connected to Raspberry Pi Pico (or Pico W).
+Copy "puerulus.uf2" to the RPI-RP2 drive of Raspberry Pi Pico or Pico W. Immediately connect to COMx port (com number depends on environment) by serial console at 115200 baud rate, if needed. Alternatively, copy "puerulus_kb.uf2" to the RPI-RP2 drive for using USB keyboard directly connected to Raspberry Pi Pico (or Pico W).
 
 ## License
 Most of codes (written in C) are provided with LGPL 2.1 license, but some codes are provided with the other licenses. See the comment of each file.
 
 ## Connection
-Connect a Raspberry Pi Pico to an ILI9341/ILI9488-based LCD (SPI connection) and an MultiMediaCard (SPI connection) as follows.
-![schematic.png](documents/shematic.png)
+Connect a Raspberry Pi Pico to a TV (NTSC Video) and an MultiMediaCard (SPI connection) as follows.
+![schematic.png](documents/shematic.png)  
 Note that USB keyboard is connected to micro-USB B port of Raspberry Pi Pico (or Pico W) board when required.
 
 ```console
@@ -35,12 +35,12 @@ GP6 I/O bit6 / I2C SDA
 GP7 I/O bit7 / I2C SCL
 GP8 I/O bit8 / button1 (UP)
 GP9 I/O bit9 / button2 (LEFT)
-GP10 LCD-DC
-GP11 LCD-RESET
-GP12 LCD-MISO
-GP13 LCD-CS
-GP14 LCD-SCK
-GP15 LCD-MOSI
+GP10 
+GP11 
+GP12 
+GP13 
+GP14 
+GP15 Video Out
 GP16 SD-DO(MISO) / SPI RX (pulled up by a 10k ohm resistor)
 GP17 SD-CS
 GP18 SD-SCLK / SCK
@@ -53,6 +53,42 @@ GP27 I/O bit14 / ADC1
 GP28 I/O bit15 / SOUND OUT / ADC2
 GP29 ADC3
 ```
+
+![schematic_xiao.png](documents/schematic_xiao.png)  
+```console
+	GP0 UART TX / PWM1
+	GP1 button5 (START) / PWM2
+	GP2 SD-SCLK / SCK
+	GP3 SD-DI(MOSI) / SPI TX
+	GP4 SD-DO(MISO) / SPI RX (pulled up by a 10k ohm resistor)
+	GP5 button6 (FIRE)
+	GP6 SD-CS
+	GP7 NTSC Video out
+	GP8 PWM3
+	GP9
+	GP10
+	GP11
+	GP12 button1 (UP)
+	GP13 button2 (LEFT)
+	GP14 button3 (RIGHT)
+	GP15 button4 (DOWN)
+	GP16
+	GP17
+	GP18
+	GP19
+	GP20
+	GP21
+	GP22
+	GP23
+	GP24
+	GP25
+	GP26 ADC0 / I2C SDA
+	GP27 ADC1 / I2C SCL
+	GP28 SOUND OUT / ADC2
+	GP29 ADC3 / SPI CS (default)
+```
+
+
 ## Using Keyboard
-The phyllosoma_kb.uf2 firmware supports using USB keyboard. Connect the USB keyboard to micro B socket of Raspberry Pi pico (or Pico W) through an USB-OTG cable, and supply 5V power to VBUS pin (#40).  
-Alternatevely, as before, the phyllosoma.uf2 firmware supports the USB serial connection between MachiKania and PC.
+The puerulus_kb.uf2 firmware supports using USB keyboard. Connect the USB keyboard to micro B socket of Raspberry Pi pico (or Pico W) through an USB-OTG cable, and supply 5V power to VBUS pin (#40).  
+Alternatevely, as before, the puerulus.uf2 firmware supports the USB serial connection between MachiKania and PC.

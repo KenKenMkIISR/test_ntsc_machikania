@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.13)
 # Pull in SDK (must be before project)
 include(pico_sdk_import.cmake)
 
-project(lcd-lib C CXX ASM)
+project(puerulus C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
@@ -105,47 +105,47 @@ if (TARGET tinyusb_device)
 		#	pico_stdlib
 		# )
 		
-	# phyllosoma_kb.uf2
-	add_executable(phyllosoma_kb
+	# puerulus_kb.uf2
+	add_executable(puerulus_kb
 		editor.c
 		interface/usbkeyboard.c
 		interface/hid_virtual_keytable.c
 		interface/keyinput.c
 		withkeyboard.c
 	)
-	target_link_libraries(phyllosoma_kb shared_files)
-	target_link_libraries(phyllosoma_kb wifi_files)
-	target_link_libraries(phyllosoma_kb aux_files)
-	target_link_libraries(phyllosoma_kb tinyusb_board)
-	target_link_libraries(phyllosoma_kb tinyusb_host)
-	target_include_directories(phyllosoma_kb PRIVATE ${CMAKE_CURRENT_LIST_DIR}/interface)
+	target_link_libraries(puerulus_kb shared_files)
+	target_link_libraries(puerulus_kb wifi_files)
+	target_link_libraries(puerulus_kb aux_files)
+	target_link_libraries(puerulus_kb tinyusb_board)
+	target_link_libraries(puerulus_kb tinyusb_host)
+	target_include_directories(puerulus_kb PRIVATE ${CMAKE_CURRENT_LIST_DIR}/interface)
 
-	# phyllosoma.uf2
-	add_executable(phyllosoma
+	# puerulus.uf2
+	add_executable(puerulus
 		withoutkeyboard.c
 		pcconnect.c
 	)
-	target_link_libraries(phyllosoma shared_files)
-	target_link_libraries(phyllosoma wifi_files)
-	target_link_libraries(phyllosoma aux_files)
+	target_link_libraries(puerulus shared_files)
+	target_link_libraries(puerulus wifi_files)
+	target_link_libraries(puerulus aux_files)
 
 	# enable usb output, disable uart output
-	pico_enable_stdio_usb(phyllosoma_kb 0)
-	pico_enable_stdio_usb(phyllosoma 1)
-	pico_enable_stdio_uart(phyllosoma_kb 0)
-	pico_enable_stdio_uart(phyllosoma 0)
+	pico_enable_stdio_usb(puerulus_kb 0)
+	pico_enable_stdio_usb(puerulus 1)
+	pico_enable_stdio_uart(puerulus_kb 0)
+	pico_enable_stdio_uart(puerulus 0)
 
 	# create map/bin/hex/uf2 file etc.
-	pico_add_extra_outputs(phyllosoma_kb)
-	pico_add_extra_outputs(phyllosoma)
+	pico_add_extra_outputs(puerulus_kb)
+	pico_add_extra_outputs(puerulus)
 
 	# use custom linker script
 	if (MACHIKANIA_WIFI STREQUAL "withwifi") 
-		pico_set_linker_script(phyllosoma_kb ${CMAKE_CURRENT_SOURCE_DIR}/wifi/memmap_machikania.ld)
-		pico_set_linker_script(phyllosoma ${CMAKE_CURRENT_SOURCE_DIR}/wifi/memmap_machikania.ld)
+		pico_set_linker_script(puerulus_kb ${CMAKE_CURRENT_SOURCE_DIR}/wifi/memmap_machikania.ld)
+		pico_set_linker_script(puerulus ${CMAKE_CURRENT_SOURCE_DIR}/wifi/memmap_machikania.ld)
 	else()
-		pico_set_linker_script(phyllosoma_kb ${CMAKE_CURRENT_SOURCE_DIR}/memmap_machikania.ld)
-		pico_set_linker_script(phyllosoma ${CMAKE_CURRENT_SOURCE_DIR}/memmap_machikania.ld)
+		pico_set_linker_script(puerulus_kb ${CMAKE_CURRENT_SOURCE_DIR}/memmap_machikania.ld)
+		pico_set_linker_script(puerulus ${CMAKE_CURRENT_SOURCE_DIR}/memmap_machikania.ld)
 	endif()
 	
 	# set compile definitions

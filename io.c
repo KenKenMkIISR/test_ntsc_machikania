@@ -48,7 +48,7 @@ int ini_file_io(char* line){
 	return 1;
 }
 
-static unsigned char gpio_table[16]={
+static unsigned char gpio_table[30]={
 	IO_GPIO0,
 	IO_GPIO1,
 	IO_GPIO2,
@@ -64,7 +64,21 @@ static unsigned char gpio_table[16]={
 	IO_GPIO12,
 	IO_GPIO13,
 	IO_GPIO14,
-	IO_GPIO15
+	IO_GPIO15,
+	IO_GPIO16,
+	IO_GPIO17,
+	IO_GPIO18,
+	IO_GPIO19,
+	IO_GPIO20,
+	IO_GPIO21,
+	IO_GPIO22,
+	IO_GPIO23,
+	IO_GPIO24,
+	IO_GPIO25,
+	IO_GPIO26,
+	IO_GPIO27,
+	IO_GPIO28,
+	IO_GPIO29
 };
 
 // UART data
@@ -214,14 +228,14 @@ int lib_pwm(int r0, int r1, int r2){
 	gpio_set_function(port, GPIO_FUNC_PWM);
 	if (1000<=r1) {
 		// Set clock divier for frequency
-		pwm_set_clkdiv(slice,125000.0/((float)r1));
+		pwm_set_clkdiv(slice,157500.0/((float)r1));
 		// 1000 cycles PWM
 		pwm_set_wrap(slice, 1000);
 		// Set duty
 		pwm_set_chan_level(slice, channel, r2);
 	} else {
 		// Set clock divier for frequency
-		pwm_set_clkdiv(slice,125000.0/65.0/((float)r1));
+		pwm_set_clkdiv(slice,157500.0/65.0/((float)r1));
 		// 1000 cycles PWM
 		pwm_set_wrap(slice, 65000);
 		// Set duty
@@ -829,7 +843,7 @@ int lib_gpio(int r0, int r1, int r2){
 	int i;
 	switch(r2){
 		case LIB_GPIO_IN:
-			if (r0<0 || 15<r0) return -1;
+			if (r0<0 || 29<r0) return -1;
 			i=gpio_table[r0];
 			gpio_init(i);
 			gpio_set_dir(i,GPIO_IN);
@@ -854,7 +868,7 @@ int lib_gpio(int r0, int r1, int r2){
 			r0=gpio_get_all() & IO_GPIO_16_MASK;
 			return io_gpio_in16_conversion(r0);
 		case LIB_GPIO_OUT:
-			if (r1<0 || 15<r1) return r0;
+			if (r1<0 || 29<r1) return r0;
 			i=gpio_table[r1];
 			gpio_init(i);
 			gpio_set_dir(i, GPIO_OUT);

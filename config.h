@@ -11,9 +11,9 @@
 
 // Environment non-specific settings follow
 
-#define PHYLLOSOMA
+#define PUERULUS
 #define SYSVER1 "Puerulus"
-#define SYSVER2 "0.0.0.0"
+#define SYSVER2 "0.0.0.1"
 #define BASVER "KM-150x"
 
 #define INTRODUCE_MACHIKANIA \
@@ -24,7 +24,7 @@
 	"\n"
 
 #ifndef KMBASIC_OBJECT_KBYTES
-#define KMBASIC_OBJECT_KBYTES 192
+#define KMBASIC_OBJECT_KBYTES 90
 #endif
 
 #define IO_SPI_TX SD_SPI_TX

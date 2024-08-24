@@ -6,7 +6,7 @@
 
 # Raspberry Pi Pico + NTSC Video out
 # YD-RP2040 + NTSC Video
-#set(MACHIKANIA_BUILD pico_ntsc)
+set(MACHIKANIA_BUILD pico_ntsc)
 
 # Seeed XIAO RP2040 for embedded development  
 # Useful for using UART with XIAO RP2040
@@ -16,7 +16,7 @@
 #set(MACHIKANIA_BUILD xiao_ntsc)
 
 # Raspberry Pi Pico W + NTSC Video out + Wifi
-set(MACHIKANIA_BUILD pico_w_ntsc)
+#set(MACHIKANIA_BUILD pico_w_ntsc)
 
 # Do not touch the lines below
 
