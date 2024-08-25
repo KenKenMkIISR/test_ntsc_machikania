@@ -328,9 +328,6 @@ unsigned int g_color(int x,int y){
 	return *(GVRAM+y*X_RES+x);
 }
 
-unsigned char *cursor=TVRAM;
-unsigned char cursorcolor=7;
-
 void windowscroll(int y1,int y2){
 	// scroll up text bitween line y1 and y2
 	unsigned char *p1,*p2,*vramend;
@@ -456,7 +453,6 @@ void printnum2(unsigned int n,unsigned char e){
 //テキスト画面を0でクリアし、カーソルを画面先頭に移動
 void cls(void){
 	clearscreen();
-	cursor=TVRAM;
 }
 
 // RAMフォント（PCG）の利用開始

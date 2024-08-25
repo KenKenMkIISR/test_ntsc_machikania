@@ -34,6 +34,8 @@ caused by using this program.
 
 uint8_t TVRAM[WIDTH_XMAX*WIDTH_Y*2+1];
 uint8_t *GVRAM=0; //グラフィックVRAM開始位置のポインタ
+uint8_t *cursor=TVRAM;
+uint8_t cursorcolor=7;
 
 volatile static uint16_t scanline;
 volatile uint16_t drawcount=0; //　1画面表示終了ごとに1足す。アプリ側で0にする。
@@ -315,6 +317,7 @@ void clearscreen(void)
 	int i;
 	vp=(unsigned int *)TVRAM;
 	for(i=0;i<WIDTH_XMAX*WIDTH_Y*2/4;i++) *vp++=0;
+	cursor=TVRAM;
 }
 
 void set_dma_channel_chain(uint ch,uint ch_to){

@@ -26,6 +26,3 @@ void stopPCG(void);
 void windowscroll(int y1,int y2);
 
 extern const unsigned char FontData[];
-extern uint8_t *cursor;
-extern uint8_t cursorcolor;
-

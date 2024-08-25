@@ -61,3 +61,5 @@ extern int twidth,twidthy; //テキスト文字数（横）および（縦）
 extern int attroffset; // TVRAMのカラー情報エリア位置
 extern const uint8_t FontData[];
 extern uint8_t* Fontp; //現在のフォントパターンの先頭アドレス
+extern uint8_t *cursor;
+extern uint8_t cursorcolor;
