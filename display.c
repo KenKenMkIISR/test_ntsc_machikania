@@ -194,6 +194,16 @@ int lib_display(int r0, int r1, int r2){
 //				WIDTH_X=r1;
 //				cls();
 //			}
+			switch(r1){
+				case 42:
+					set_videomode(VMODE_WIDETEXT,0);
+					break;
+				case 80:
+					set_videomode(VMODE_MONOTEXT,0);
+					break;
+				default:
+					break;
+			}
 			break;
 		case DISPLAY_TVRAM:
 			if (r0<0) return (int)&TVRAM[0];
