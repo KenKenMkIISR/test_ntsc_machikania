@@ -51,6 +51,7 @@ void start_composite(void);
 void stop_composite(void);
 void rp2040_pwm_ntsc_init(uint8_t n);
 void set_palette(uint16_t c,unsigned char b,unsigned char r,unsigned char g);
+void init_palette(void);
 void set_videomode(unsigned char m, unsigned char *gvram); //ビデオモードの切り替え
 
 extern volatile uint16_t drawcount;

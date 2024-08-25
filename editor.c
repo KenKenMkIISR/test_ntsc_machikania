@@ -1,6 +1,6 @@
 /*----------------------------------------------------------------------------
 
-Copyright (C) 2023, KenKen, all right reserved.
+Copyright (C) 2024, KenKen, all right reserved.
 
 This program supplied herewith by KenKen is free software; you can
 redistribute it and/or modify it under the terms of the same license written
@@ -549,11 +549,16 @@ void redraw(){
 	}
 	for(y=0;y<EDITWIDTHY;y++){
 		if(bp==NULL) break;
-		for(x=0;x<WIDTH_X;x++){
+		for(x=0;x<twidth;x++){
 			//文字がある位置までサーチ
 			while(ix>=bp->n){
 				if(bp==bp1 && ix==ix1){
-					cl=COLOR_AREASELECTTEXT;
+					if(textmode!=TMODE_MONOTEXT){
+						cl=COLOR_AREASELECTTEXT;
+					}
+					else{
+						cl=COLOR_INV;
+					}
 				}
 				if(bp==bp2 && ix==ix2) cl=COLOR_NORMALTEXT;
 				bp=bp->next;
@@ -562,7 +567,12 @@ void redraw(){
 			}
 			if(bp==NULL) break; //バッファ最終
 			if(bp==bp1 && ix==ix1){
-				cl=COLOR_AREASELECTTEXT;
+				if(textmode!=TMODE_MONOTEXT){
+					cl=COLOR_AREASELECTTEXT;
+				}
+				else{
+					cl=COLOR_INV;
+				}
 			}
 			if(bp==bp2 && ix==ix2) cl=COLOR_NORMALTEXT;
 			ch=bp->Buf[ix++];
@@ -575,7 +585,7 @@ void redraw(){
 			vp++;
 		}
 		//改行およびバッファ最終以降の右側表示消去
-		for(;x<WIDTH_X;x++){
+		for(;x<twidth;x++){
 			if(*vp!=0 || *(vp+attroffset)!=0){
 				*vp=0;
 				*(vp+attroffset)=0;
@@ -586,7 +596,7 @@ void redraw(){
 	}
 	//バッファ最終以降の下側表示消去
 	for(;y<EDITWIDTHY;y++){
-		for(x=0;x<WIDTH_X;x++){
+		for(x=0;x<twidth;x++){
 			if(*vp!=0 || *(vp+attroffset)!=0){
 				*vp=0;
 				*(vp+attroffset)=0;
@@ -632,7 +642,7 @@ void cursor_left(void){
 		//左端だが上端ではない場合
 		if(cursorbp->Buf[cursorix]!='\n'){
 			// 移動先が改行コードでない場合、カーソルは1つ上の行の右端に移動
-			cx=WIDTH_X-1;
+			cx=twidth-1;
 			cx2=cx;
 			cy--;
 			return;
@@ -648,7 +658,7 @@ void cursor_left(void){
 				ix=0;
 				continue;
 			}
-			if(bp->Buf[ix++]=='\n' || x>=WIDTH_X-1) x=0;
+			if(bp->Buf[ix++]=='\n' || x>=twidth-1) x=0;
 			else x++;
 			if(ix >= bp->n){
 				bp=bp->next;
@@ -666,7 +676,7 @@ void cursor_left(void){
 	if(cursorbp->Buf[cursorix]!='\n'){
 		// 移動先が改行コードでない場合、カーソルは右端に移動
 		// 画面左上位置は画面横幅分前に移動
-		cx=WIDTH_X-1;
+		cx=twidth-1;
 		cx2=cx;
 	}
 	else{
@@ -687,7 +697,7 @@ void cursor_left(void){
 			if(bp->Buf[ix]=='\n') break;
 			i++;
 		}
-		cx=i % WIDTH_X;
+		cx=i % twidth;
 		cx2=cx;
 		line_no--;
 	}
@@ -734,7 +744,7 @@ void cursor_right(void){
 		cursorix=0;//バッファ先頭
 	}
 	c=cursorbp->Buf[cursorix++]; //バッファ上のカーソル位置のコードを読んで1つ後ろに移動
-	if(c!='\n' && cx<WIDTH_X-1){
+	if(c!='\n' && cx<twidth-1){
 		//カーソル位置が改行でも右端でもない場合単純に1つ右に移動して終了
 		cx++;
 		cx2=cx;
@@ -754,7 +764,7 @@ void cursor_right(void){
 	bp=disptopbp;
 	ix=disptopix;
 	x=0;
-	while(x<WIDTH_X){
+	while(x<twidth){
 		if(ix >= bp->n){
 			bp=bp->next;
 			ix=0;
@@ -785,7 +795,7 @@ void cursor_up(void){
 	bp=cursorbp;
 	ix=cursorix;
 	i=cx2-cx;
-	while(i<WIDTH_X){
+	while(i<twidth){
 		if(ix==0){
 			if(bp->prev==NULL) return; //バッファ先頭までサーチしたら移動なし
 			bp=bp->prev;
@@ -799,7 +809,7 @@ void cursor_up(void){
 	cursorbp=bp;
 	cursorix=ix;
 	//画面幅の間に改行コードがなかった場合
-	if(i==WIDTH_X){
+	if(i==twidth){
 		cx=cx2;
 		//画面上端でなければカーソルを1つ上に移動して終了
 		if(cy>0){
@@ -837,7 +847,7 @@ void cursor_up(void){
 		if(bp->Buf[ix]=='\n') break;
 		i++;
 	}
-	x=i % WIDTH_X; //改行ブロックの最終行の右端
+	x=i % twidth; //改行ブロックの最終行の右端
 	bp=cursorbp;
 	ix=cursorix;
 	//バッファ上のカーソル位置は改行ブロックの最終行右端からカーソルX座標分戻る
@@ -891,7 +901,7 @@ void cursor_down(void){
 	bp=cursorbp;
 	ix=cursorix;
 	x=cx;
-	while(x<WIDTH_X){
+	while(x<twidth){
 		if(ix>=bp->n){
 			if(bp->next==NULL) return; //バッファ最後までサーチしたら移動なし
 			bp=bp->next;
@@ -933,7 +943,7 @@ void cursor_down(void){
 	bp=disptopbp;
 	ix=disptopix;
 	x=0;
-	while(x<WIDTH_X){
+	while(x<twidth){
 		if(ix >= bp->n){
 			bp=bp->next;
 			ix=0;
@@ -975,7 +985,7 @@ void cursor_home(void){
 void cursor_end(void){
 	//カーソルX座標を画面幅分後ろに移動
 	//改行コードまたはバッファ最終があればそこに移動
-	while(cx<WIDTH_X-1){
+	while(cx<twidth-1){
 		if(cursorix>=cursorbp->n){
 			//空バッファは飛ばす
 			if(cursorbp->next==NULL) break;
@@ -1516,7 +1526,7 @@ void printfilename(unsigned char x,unsigned char y,int f,int num_dir){
 		if(show_timestamp){
 			setcursor(x+13,y,COLOR_NORMALTEXT);
 			disptimestamp(&files[f]);
-			if(WIDTH_X>=40){
+			if(twidth>=40){
 				printchar(' ');
 				uint32_t size=files[f].fsize;
 				if(size>=(1<<28)){
@@ -1538,7 +1548,7 @@ void disp_dir_file_list(int filenum,int top,int num_dir, unsigned char* msg){
 	int x,y;
 	int mx,my;
 
-	if(show_timestamp) mx=1; else mx=WIDTH_X/13;
+	if(show_timestamp) mx=1; else mx=twidth/13;
 	my=WIDTH_Y-1;
 
 	//ファイル一覧を画面に表示
@@ -1546,11 +1556,11 @@ void disp_dir_file_list(int filenum,int top,int num_dir, unsigned char* msg){
 	setcursor(0,0,COLOR_NORMALTEXT);
 	printstr(msg);
 	setcursor(5,0,COLOR_ERRORTEXT);
-	if(WIDTH_X>=40)
+	if(twidth>=40)
 		printstr("[Enter]/[Esc] F1:View F3:Sort");
 	else
 		printstr("[Enter][ESC][F1][F3]");
-	setcursor(WIDTH_X-5,0,COLOR_BOTTOMLINE);
+	setcursor(twidth-5,0,COLOR_BOTTOMLINE);
 	switch (filesortby)
 	{
 	case 0:
@@ -1585,17 +1595,19 @@ void disp_dir_file_list(int filenum,int top,int num_dir, unsigned char* msg){
 int select_dir_file(int filenum,int num_dir, unsigned char* msg){
 	int top,f,f2;
 	int x,y;
-	unsigned char vk,sh;
+	unsigned char vk,sh,vm;
 	int mx,my;
 
-	if(show_timestamp) mx=1; else mx=WIDTH_X/13;
+	vm=videomode;
+	set_videomode(VMODE_WIDETEXT,0);
+	if(show_timestamp) mx=1; else mx=twidth/13;
 	my=WIDTH_Y-1;
 	top=-2;//画面一番先頭のファイル番号
 	f=-2;//現在選択中のファイル番号
 	disp_dir_file_list(filenum,top,num_dir,msg); //ファイル一覧を画面に表示
 	while(1){
 		setcursor(0,WIDTH_Y-1,COLOR_NORMALTEXT);
-		for(x=0;x<WIDTH_X-1;x++) printchar(' '); //最下行のステータス表示を消去
+		for(x=0;x<twidth-1;x++) printchar(' '); //最下行のステータス表示を消去
 		setcursor(((f+2)%mx)*13,(f-top)/mx+1,5);
 		printchar(0x1c);// Right Arrow
 		cursor--;
@@ -1622,13 +1634,13 @@ int select_dir_file(int filenum,int num_dir, unsigned char* msg){
 					f-=mx;
 					if(f<top){
 						//画面最上部の場合、下にスクロールして最上部にファイル名表示
-						setcursor(WIDTH_X-1,WIDTH_Y-2,COLOR_NORMALTEXT);
-						while(cursor>=TVRAM+WIDTH_X*2){
-							*cursor=*(cursor-WIDTH_X);
-							*(cursor+attroffset)=*(cursor+attroffset-WIDTH_X);
+						setcursor(twidth-1,WIDTH_Y-2,COLOR_NORMALTEXT);
+						while(cursor>=TVRAM+twidth*2){
+							*cursor=*(cursor-twidth);
+							*(cursor+attroffset)=*(cursor+attroffset-twidth);
 							cursor--;
 						}
-						while(cursor>=TVRAM+WIDTH_X) *cursor--=' ';
+						while(cursor>=TVRAM+twidth) *cursor--=' ';
 						top-=mx;
 						for(int i=0;i<mx;i++){
 							printfilename(i*13+1,1,top+i,num_dir);
@@ -1646,12 +1658,12 @@ int select_dir_file(int filenum,int num_dir, unsigned char* msg){
 					if(f-top>=(WIDTH_Y-2)*mx){
 						//画面最下部の場合、上にスクロールして最下部にファイル名表示
 						setcursor(0,1,COLOR_NORMALTEXT);
-						while(cursor<TVRAM+WIDTH_X*(WIDTH_Y-2)){
-							*cursor=*(cursor+WIDTH_X);
-							*(cursor+attroffset)=*(cursor+attroffset+WIDTH_X);
+						while(cursor<TVRAM+twidth*(WIDTH_Y-2)){
+							*cursor=*(cursor+twidth);
+							*(cursor+attroffset)=*(cursor+attroffset+twidth);
 							cursor++;
 						}
-						while(cursor<TVRAM+attroffset-WIDTH_X) *cursor++=' ';
+						while(cursor<TVRAM+attroffset-twidth) *cursor++=' ';
 						top+=mx;
 						f2=f-(f+2)%mx;
 						for(int i=0;i<mx;i++){
@@ -1688,9 +1700,9 @@ int select_dir_file(int filenum,int num_dir, unsigned char* msg){
 				break;
 			case VK_F1:
 				//F1キー タイムスタンプ表示切り替え
-				if(WIDTH_X>=30){
+				if(twidth>=30){
 					show_timestamp^=1;
-					if(show_timestamp) mx=1; else mx=WIDTH_X/13;
+					if(show_timestamp) mx=1; else mx=twidth/13;
 					top=-2;//画面一番先頭のファイル番号
 					f=-2;//現在選択中のファイル番号
 					disp_dir_file_list(filenum,top,num_dir,msg); //ファイル一覧を画面に表示
@@ -1746,9 +1758,11 @@ int select_dir_file(int filenum,int num_dir, unsigned char* msg){
 					//ファイル名またはディレクトリ名をtempfileにコピー
 					strcpy(tempfile,files[f].fname);
 				}
+				set_videomode(vm,0);
 				return f;
 			case VK_ESCAPE:
 				//ESCキー
+				set_videomode(vm,0);
 				return -3;
 		}
 	}
@@ -2070,10 +2084,11 @@ int fileload(void){
 		}
 	}
 }
-// 画面縦横の切り替え
+// 画面幅の切り替え
 void changewidth(void){
 //	set_lcdalign(LCD_ALIGNMENT^HORIZONTAL); //縦横切り替え
-	EDITWIDTHY=WIDTH_Y-1; //エディタ画面行数設定
+	if(videomode==VMODE_WIDETEXT) set_videomode(VMODE_MONOTEXT,0);
+	else set_videomode(VMODE_WIDETEXT,0);
 	cursor_top(); //カーソルをテキストバッファの先頭に設定
 	redraw(); //再描画
 }
@@ -2085,7 +2100,7 @@ void run(int test){
 	FRESULT fr;
 	FIL Fil;
 	unsigned int disptoppos,cursorpos;
-	int alignment;
+	unsigned char widthmode;
 	int i,edited1;
 	_tbuf *bp;
 	unsigned short ix;
@@ -2149,9 +2164,9 @@ void run(int test){
 	//カーソル位置、画面表示位置、画面モードの保存
 	disptoppos=bpixtopos(disptopbp,disptopix);
 	cursorpos=bpixtopos(cursorbp,cursorix);
-	alignment=1;
+	widthmode=videomode;
 	edited1=edited; //編集済みフラグの一時退避
-//	set_lcdalign(HORIZONTAL | (LCD_ALIGNMENT&LCD180TURN)); //デフォルトは横方向で実行
+	set_videomode(VMODE_WIDETEXT,0);
 
 	//KM-BASIC実行
 	printstr(INTRODUCE_MACHIKANIA);
@@ -2176,7 +2191,9 @@ void run(int test){
 	do usbkb_readkey(); //キーバッファが空になるまで読み出し
 	while(vkey!=0);
 	inputchar(); //1文字入力待ち
-//	init_palette();	//カラーパレット初期化
+	init_palette();	//カラーパレット初期化
+	//画面モードを戻す
+	set_videomode(widthmode,0);
 	
 	while(1){
 		//カレントディレクトリをルートに変更
@@ -2259,8 +2276,14 @@ void displaybottomline(void){
 	p=cursor; //カーソル位置の退避
 	c=cursorcolor;
 	if(shiftkeys() & CHK_SHIFT){
-		setcursor(0,WIDTH_Y-1,COLOR_BOTTOMLINE);
-		printstr("NEW |    |H/V |TEST|");
+		if(videomode!=VMODE_MONOTEXT){
+			setcursor(0,WIDTH_Y-1,COLOR_BOTTOMLINE);
+			printstr("NEW |    |WIDTH|TEST|");
+		}
+		else{
+			setcursor(0,WIDTH_Y-1,COLOR_INV);
+			printstr(" NEW  \x87      \x87 WIDTH\x87 TEST \x87\x87");
+		}
 		setcursorcolor(COLOR_ERRORTEXT);
 		t=TBUFMAXSIZE-num;
 		if(t==0) t=1;
@@ -2272,8 +2295,14 @@ void displaybottomline(void){
 		printnum(TBUFMAXSIZE-num);
 	}
 	else{
-		setcursor(0,WIDTH_Y-1,COLOR_BOTTOMLINE);
-		printstr("LOAD|SAVE|    |RUN |");
+		if(videomode!=VMODE_MONOTEXT){
+			setcursor(0,WIDTH_Y-1,COLOR_BOTTOMLINE);
+			printstr("LOAD|SAVE|    |RUN |");
+		}
+		else{
+			setcursor(0,WIDTH_Y-1,COLOR_INV);
+			printstr(" LOAD \x87 SAVE \x87      \x87 RUN  \x87\x87");
+		}
 		setcursorcolor(COLOR_ERRORTEXT);
 		t=line_no;
 		if(t==0) t=1;
