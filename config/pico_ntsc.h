@@ -34,7 +34,7 @@
 
 //                     31     24      16       8       0
 //                      |      |       |       |       |
-#define GPIO_ALL_MASK 0b00011110011100000111111111111111
+#define GPIO_ALL_MASK 0b00111100011100000111111111111111
 
 // IO settings
 #define IO_SPI_CS 3
@@ -69,25 +69,25 @@
 #define IO_GPIO7  7
 #define IO_GPIO8  8
 #define IO_GPIO9  9
-#define IO_GPIO10 10
-#define IO_GPIO11 11
-#define IO_GPIO12 12
-#define IO_GPIO13 13
-#define IO_GPIO14 14
-#define IO_GPIO15 15
-#define IO_GPIO16 16
-#define IO_GPIO17 17
-#define IO_GPIO18 18
-#define IO_GPIO19 19
-#define IO_GPIO20 20
-#define IO_GPIO21 21
-#define IO_GPIO22 22
-#define IO_GPIO23 23
-#define IO_GPIO24 24
-#define IO_GPIO25 25
-#define IO_GPIO26 26
-#define IO_GPIO27 27
-#define IO_GPIO28 28
+#define IO_GPIO10 20
+#define IO_GPIO11 21
+#define IO_GPIO12 22
+#define IO_GPIO13 26
+#define IO_GPIO14 27
+#define IO_GPIO15 28
+#define IO_GPIO16 10
+#define IO_GPIO17 11
+#define IO_GPIO18 12
+#define IO_GPIO19 13
+#define IO_GPIO20 14
+#define IO_GPIO21 15
+#define IO_GPIO22 16
+#define IO_GPIO23 17
+#define IO_GPIO24 18
+#define IO_GPIO25 19
+#define IO_GPIO26 23
+#define IO_GPIO27 24
+#define IO_GPIO28 25
 #define IO_GPIO29 29
 
 // Buttons settings

@@ -40,7 +40,7 @@ volatile uint16_t drawcount=0; //　1画面表示終了ごとに1足す。アプ
 volatile uint8_t drawing; //　映像区間処理中は-1、その他は0
 uint8_t videostop; // 1～3：ビデオ出力停止、0：ビデオ出力中
 
-unsigned char videomode,textmode,graphmode; //画面モード
+unsigned char videomode=0xff,textmode=0xff,graphmode=0xff; //画面モード
 int twidth,twidthy; //テキスト文字数（横）および（縦）
 int attroffset; // TVRAMのカラー情報エリア位置
 uint8_t* Fontp; //現在のフォントパターンの先頭アドレス
@@ -55,9 +55,9 @@ static uint pwm_dma_chan0,pwm_dma_chan1;
 
 static void makeDmaBuffer(uint16_t* buf, size_t line_num)
 {
-	static uint8_t* fbp;
-	static uint8_t* tvp;
-	static uint8_t tline = 0;
+	uint8_t* fbp;
+	uint8_t* tvp;
+	uint8_t tline = 0;
 	uint16_t* b = buf;
 
 	if(videostop){
@@ -91,10 +91,10 @@ static void makeDmaBuffer(uint16_t* buf, size_t line_num)
 			b+=H_PICTURE;
 			if (line_num == V_SYNC + V_PREEQ)
 			{
-				tvp = TVRAM;
-				tline = 0;
 				drawing = -1;
 			}
+			tvp = TVRAM+((line_num-(V_SYNC + V_PREEQ))>>3)*WIDTH_XBW;
+			tline = (line_num-(V_SYNC + V_PREEQ)) & 7;
 			for(int i=0;i<WIDTH_XBW;i++)
 			{
 				uint8_t d=Fontp[*tvp *8 +tline];
@@ -112,9 +112,6 @@ static void makeDmaBuffer(uint16_t* buf, size_t line_num)
 				}
 				tvp++;
 			}
-			tline++;
-			if(tline<8) tvp-=WIDTH_XBW;
-			else tline=0;
 		}
 	}
 	else{
@@ -139,11 +136,10 @@ static void makeDmaBuffer(uint16_t* buf, size_t line_num)
 			b+=H_PICTURE;
 			if (line_num == V_SYNC + V_PREEQ)
 			{
-				fbp = GVRAM;
-				tvp = TVRAM;
-				tline = 0;
 				drawing = -1;
 			}
+			tvp = TVRAM+((line_num-(V_SYNC + V_PREEQ))>>3)*WIDTH_X;
+			tline = (line_num-(V_SYNC + V_PREEQ)) & 7;
 			if(videomode==VMODE_WIDETEXT){
 				//テキストモード
 				uint32_t bc1=*((uint32_t*)(color_tbl+256*4));
@@ -176,6 +172,7 @@ static void makeDmaBuffer(uint16_t* buf, size_t line_num)
 				}
 			}
 			else if(videomode==VMODE_WIDEGRPH){
+				fbp = GVRAM+(line_num-(V_SYNC + V_PREEQ))*X_RES;
 				//グラフィック＋テキストモード
 				for(int i=0;i<WIDTH_X;i++)
 				{
@@ -206,9 +203,6 @@ static void makeDmaBuffer(uint16_t* buf, size_t line_num)
 					tvp++;
 				}
 			}
-			tline++;
-			if(tline<8) tvp-=WIDTH_X;
-			else tline=0;
 		}
 	}
 	if(line_num==V_SYNC+V_PREEQ+Y_RES || line_num==V_SYNC+V_PREEQ+Y_RES+1)
@@ -365,15 +359,8 @@ void rp2040_pwm_ntsc_init(uint8_t n)
 	gpio_set_dir(PIN_DEBUG_BUSY, GPIO_OUT);
 #endif
 	//ビデオモード初期化
-	videomode=VMODE_WIDETEXT;
-	textmode=TMODE_WIDETEXT;
-	graphmode=GMODE_NOGRPH;
-	twidth=WIDTH_X;
-	twidthy=WIDTH_Y;
-	attroffset=ATTROFFSET;
-
+	set_videomode(VMODE_WIDETEXT,0);
 	init_palette();
-	clearscreen();
 	Fontp=(uint8_t*)FontData; //標準フォントに設定
 
 	// CPUを157.5MHzで動作させる
@@ -455,7 +442,9 @@ void set_videomode(unsigned char m, unsigned char *gvram){
 		case VMODE_WIDETEXT: // ワイドテキスト48文字モード
 			if(textmode!=TMODE_WIDETEXT){
 				textmode=TMODE_WIDETEXT;
+				graphmode=0;
 				twidth=WIDTH_X;
+				twidthy=WIDTH_Y;
 				attroffset=ATTROFFSET;
 				clearscreen();
 			}
@@ -464,29 +453,24 @@ void set_videomode(unsigned char m, unsigned char *gvram){
 			if(textmode!=TMODE_MONOTEXT){
 				textmode=TMODE_MONOTEXT;
 				twidth=WIDTH_XBW;
+				twidthy=WIDTH_Y;
 				attroffset=ATTROFFSETBW;
 				clearscreen();
 			}
 			break;
 		case VMODE_WIDEGRPH: // ワイドグラフィック＋テキスト48文字モード
+			GVRAM=gvram;
+			g_clearscreen();
 			graphmode=GMODE_WIDEGRPH;
 			if(textmode!=TMODE_WIDETEXT){
 				textmode=TMODE_WIDETEXT;
 				twidth=WIDTH_X;
+				twidthy=WIDTH_Y;
 				attroffset=ATTROFFSET;
 				clearscreen();
 			}
 			break;
 	}
 	videomode=m;
-	if(m>=16){
-		// グラフィック使用モード
-		GVRAM=gvram;
-		g_clearscreen();
-	}
-	else{
-		// グラフィック不使用モード
-		graphmode=0;
-	}
 //	start_composite();
 }
