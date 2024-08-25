@@ -450,7 +450,7 @@ void set_videomode(unsigned char m, unsigned char *gvram){
 	unsigned int i;
 
 	if(videomode==m) return;
-//	stop_composite();
+	stop_composite();
 	switch(m){
 		case VMODE_WIDETEXT: // ワイドテキスト48文字モード
 			if(textmode!=TMODE_WIDETEXT){
@@ -488,5 +488,5 @@ void set_videomode(unsigned char m, unsigned char *gvram){
 		// グラフィック不使用モード
 		graphmode=0;
 	}
-//	start_composite();
+	start_composite();
 }
