@@ -472,18 +472,5 @@ void set_videomode(unsigned char m, unsigned char *gvram){
 			break;
 	}
 	videomode=m;
-<<<<<<< HEAD
 //	start_composite();
-=======
-	if(m>=16){
-		// グラフィック使用モード
-		GVRAM=gvram;
-		g_clearscreen();
-	}
-	else{
-		// グラフィック不使用モード
-		graphmode=0;
-	}
-	start_composite();
->>>>>>> f961fb94dfb88014634fa5ea98c55d5b9c698802
 }
