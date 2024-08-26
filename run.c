@@ -103,8 +103,6 @@ void call_interrupt_function(void* r0){
 	asm("pop {r0,r1,r2,r3,r4,r5,r6,r7}");
 }
 
-uint8_t framebuffer[X_RES*Y_RES] __attribute__ ((aligned (4)));
-
 void pre_run(void){
 	// Initializing environment
 	init_memory();
@@ -118,11 +116,12 @@ void pre_run(void){
 	kmbasic_data[2]=(int)&kmbasic_var_size[0];
 	// Close all files
 	close_all_files();
+	// Init video
+	set_videomode(VMODE_WIDETEXT,0);
 	// Init I/O
 	io_init();
 	// Init music
 	init_music();
-	set_videomode(VMODE_WIDEGRPH,framebuffer);
 	// Lower interrupt flag
 	g_interrupt_code=0;
 	// Reset static variables
@@ -137,6 +136,7 @@ void pre_run(void){
 void init_palette(void);
 
 void post_run(void){
+	// Reset video settings
 	set_videomode(VMODE_WIDETEXT,0);
 	init_palette();
 	// Reset memory allocation

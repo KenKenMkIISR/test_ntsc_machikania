@@ -28,6 +28,8 @@ int lib_display(int r0, int r1, int r2){
 	static unsigned char cursorcolor=7;
 	static unsigned char gcolor=7;
 	static unsigned char* ppcg=0;
+	static unsigned char* pgvram=0;
+	static int permanent_block_number=0;
 	static int prevx1=0,prevy1=0;
 	int* sp=(int*)r1;
 	int i,j,gc;
@@ -56,6 +58,8 @@ int lib_display(int r0, int r1, int r2){
 				return 0;
 		}
 	}
+	// Check if graphic function is available
+	if ( (DISPLAY_USE_GRAPHIC & (1<<r2)) && (!pgvram) ) stop_with_error(ERROR_FUNCTION_CALL);
 	// Set x1,y1,x2,y2 for graphic
 	if (DISPLAY_USE_STACK & (1<<r2)) {
 		// r1 is a pointer to stack
@@ -273,9 +277,16 @@ int lib_display(int r0, int r1, int r2){
 			prevy1=y1;
 			break;
 		case DISPLAY_USEGRAPHIC:
+			if (!permanent_block_number) permanent_block_number=get_permanent_block_number();
 			switch(r0&3){
 				case 0:
-					g_clearscreen();
+					if (pgvram) {
+						delete_memory(pgvram);
+						pgvram=0;
+					} else {
+						pgvram=calloc_memory(X_RES*Y_RES/4,permanent_block_number);
+					}
+					set_videomode(VMODE_WIDETEXT,0);
 					break;
 				case 2:
 					// clear palette
@@ -290,11 +301,14 @@ int lib_display(int r0, int r1, int r2){
 					}
 					// clear graphic display
 					cls();
+					// Continue to case 1
+				case 1:
+					// Allocate memory for graphic VRAM and start graphic mode
+					if (!pgvram) pgvram=calloc_memory(X_RES*Y_RES/4,permanent_block_number);
+					set_videomode(VMODE_WIDEGRPH,pgvram);
 					g_clearscreen();
 					break;
-				case 1:
 				default:
-					cls();
 					break;
 			}
 			break;
