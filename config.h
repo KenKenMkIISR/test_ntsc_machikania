@@ -24,7 +24,7 @@
 	"\n"
 
 #ifndef KMBASIC_OBJECT_KBYTES
-#define KMBASIC_OBJECT_KBYTES 90
+#define KMBASIC_OBJECT_KBYTES 192
 #endif
 
 #define IO_SPI_TX SD_SPI_TX
