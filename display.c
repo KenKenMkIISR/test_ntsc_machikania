@@ -40,6 +40,8 @@ int lib_display(int r0, int r1, int r2){
 		ppcg=0;
 		prevx1=0;
 		prevy1=0;
+		pgvram=0;
+		permanent_block_number=0;
 		return r0;
 	} else if (0==r2) {
 		// Return the static data
