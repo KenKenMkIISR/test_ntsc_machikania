@@ -1,4 +1,4 @@
-# test NTSC MachiKania
+# MachiKania type PU
 MachiKania RP2040 Video
 
 ## MachiKania RP2040 Video
@@ -15,6 +15,9 @@ cmake and make. The pico-sdk (ver 1.5.0 is confirmed for building) with tinyusb 
 
 ## how to use
 Copy "puerulus.uf2" to the RPI-RP2 drive of Raspberry Pi Pico or Pico W. Immediately connect to COMx port (com number depends on environment) by serial console at 115200 baud rate, if needed. Alternatively, copy "puerulus_kb.uf2" to the RPI-RP2 drive for using USB keyboard directly connected to Raspberry Pi Pico (or Pico W).
+  
+## .uf2 files
+Excecutable binary files (.uf2) are available in "uf2" directory. The "xiao" directory contains files for XIAO, Tiny and Zero.  
 
 ## License
 Most of codes (written in C) are provided with LGPL 2.1 license, but some codes are provided with the other licenses. See the comment of each file.
@@ -53,6 +56,8 @@ GP27 I/O bit14 / ADC1
 GP28 I/O bit15 / SOUND OUT / ADC2
 GP29 ADC3
 ```
+  
+Connect a Seeed XIAO 2040, Tiny2040, RP2040-Zero to a TV (NTSC Video) and an MultiMediaCard (SPI connection) as follows.
 
 ![schematic_xiao.png](documents/schematic_xiao.png)  
 ```console
@@ -87,7 +92,7 @@ GP29 ADC3
 	GP28 SOUND OUT / ADC2
 	GP29 ADC3 / SPI CS (default)
 ```
-
+For more details, please see documents/MachiKania-RP2040-Video.pdf.
 
 ## Using Keyboard
 The puerulus_kb.uf2 firmware supports using USB keyboard. Connect the USB keyboard to micro B socket of Raspberry Pi pico (or Pico W) through an USB-OTG cable, and supply 5V power to VBUS pin (#40).  
