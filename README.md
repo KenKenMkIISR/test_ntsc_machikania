@@ -3,7 +3,8 @@
 MachiKania type PUは現在開発中のRP2040マイコン向けビデオ出力対応BASIC利用システムです。開発途中のため、今後仕様は変更となる可能性があります。  
 MachiKania type PUは大きく2種類の構成があります。1つはMachiKania type Pから液晶ディスプレイを取り外し、代わりにビデオ出力機能を追加したもの（Case 1）、もう一つはXIAO RP2040など小型のRP2040搭載マイコン基板向けに新たに設計し直したもの（Case 2）で、接続構成が大きく異なります。そのため、それぞれに異なる実行用バイナリファイルを用意しています。また、Case 1では、無線LAN環境に対応したRaspberry Pi Pico Pico W用バイナリも用意しました。  
 実行用バイナリファイルはuf2ディレクトリ配下のそれぞれの名称のディレクトリのものをご利用ください。さらに、それぞれがUSBキーボード利用版とPC接続利用版がありますので、利用環境に合わせてRP2040マイコンにインストールしてください。  
-Case 2用の頒布中実験基板については、以下のチラシをご参照ください。  < <a href="./documents/MachiKania-RP2040-Video.pdf">MachiKania-RP2040-Video.pdf</a>
+Case 2用の頒布中実験基板については、以下のチラシをご参照ください。  
+<a href="./documents/MachiKania-RP2040-Video.pdf">MachiKania-RP2040-Video.pdf</a>
 
 ## MachiKania RP2040 Video
 MachiKania RP2040 Video is a BASIC compiler for ARMv6-M, especially for Raspberry Pi Pico, Pico W, XIAO RP2040, Tiny 2040 and RP2040-Zero.  
