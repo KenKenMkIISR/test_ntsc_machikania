@@ -1,5 +1,9 @@
 # MachiKania type PU
-MachiKania RP2040 Video
+## 始めに
+MachiKania type PUは現在開発中のRP2040マイコン向けビデオ出力対応BASIC利用システムです。開発途中のため、今後仕様は変更となる可能性があります。  
+MachiKania type PUは大きく2種類の構成があります。1つはMachiKania type Pから液晶ディスプレイを取り外し、代わりにビデオ出力機能を追加したもの（Case 1）、もう一つはXIAO RP2040など小型のRP2040搭載マイコン基板向けに新たに設計し直したもの（Case 2）で、接続構成が大きく異なります。そのため、それぞれに異なる実行用バイナリファイルを用意しています。また、Case 1では、無線LAN環境に対応したRaspberry Pi Pico Pico W用バイナリも用意しました。  
+実行用バイナリファイルはuf2ディレクトリ配下のそれぞれの名称のディレクトリのものをご利用ください。さらに、それぞれがUSBキーボード利用版とPC接続利用版がありますので、利用環境に合わせてRP2040マイコンにインストールしてください。  
+Case 2用の頒布中実験基板については、以下のチラシをご参照ください。  < <a href="./documents/MachiKania-RP2040-Video.pdf">MachiKania-RP2040-Video.pdf</a>
 
 ## MachiKania RP2040 Video
 MachiKania RP2040 Video is a BASIC compiler for ARMv6-M, especially for Raspberry Pi Pico, Pico W, XIAO RP2040, Tiny 2040 and RP2040-Zero.  
@@ -23,6 +27,7 @@ Excecutable binary files (.uf2) are available in "uf2" directory. The "xiao" dir
 Most of codes (written in C) are provided with LGPL 2.1 license, but some codes are provided with the other licenses. See the comment of each file.
 
 ## Connection
+### Case 1. MachiKania type P + Video adapter - LCD
 Connect a Raspberry Pi Pico to a TV (NTSC Video) and an MultiMediaCard (SPI connection) as follows.
 ![schematic.png](documents/shematic.png)  
 Note that USB keyboard is connected to micro-USB B port of Raspberry Pi Pico (or Pico W) board when required.
@@ -57,7 +62,8 @@ GP28 I/O bit15 / SOUND OUT / ADC2
 GP29 ADC3
 ```
   
-Connect a Seeed XIAO 2040, Tiny2040, RP2040-Zero to a TV (NTSC Video) and an MultiMediaCard (SPI connection) as follows.
+### Case 2. For XIAO RP2040, Tiny2040, RP2040-Zero
+Connect XIAO RP2040 or Tiny2040 or RP2040-Zero to a TV (NTSC Video) and an MultiMediaCard (SPI connection) as follows.
 
 ![schematic_xiao.png](documents/schematic_xiao.png)  
 ```console
