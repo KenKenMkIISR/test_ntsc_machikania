@@ -1,17 +1,13 @@
 # MachiKania type PU
-## 始めに
-MachiKania type PUは現在開発中のRP2040マイコン向けビデオ出力対応BASIC利用システムです。開発途中のため、今後仕様は変更となる可能性があります。  
-MachiKania type PUは大きく2種類の構成があります。1つはMachiKania type Pから液晶ディスプレイを取り外し、代わりにビデオ出力機能を追加したもの（Case 1）、もう一つはXIAO RP2040など小型のRP2040搭載マイコン基板向けに新たに設計し直したもの（Case 2）で、接続構成が大きく異なります。そのため、それぞれに異なる実行用バイナリファイルを用意しています。また、Case 1では、無線LAN環境に対応したRaspberry Pi Pico Pico W用バイナリも用意しました。  
-実行用バイナリファイルはuf2ディレクトリ配下のそれぞれの名称のディレクトリのものをご利用ください。さらに、それぞれがUSBキーボード利用版とPC接続利用版がありますので、利用環境に合わせてRP2040マイコンにインストールしてください。  
-Case 2用の頒布中実験基板については、以下のチラシをご参照ください。  
-<a href="./documents/MachiKania-RP2040-Video.pdf">MachiKania-RP2040-Video.pdf</a>  
-MachiKania type PUではグラフィック関連命令を実行する前にUSEGRAPHIC命令を実行してグラフィックメモリ領域を確保する必要があります。プログラムの冒頭に以下の1命令を記述してください。  
+このページは開発途中のMachiKania type PUをテスト公開していたものです。2024年12月28日、MachiKania type PUは以下に正式版を公開しましたので、本レポジトリの役割は終了します。  
+<a href="http://www.ze.em-net.ne.jp/~kenken/machikania/typepu.html">ビデオ出力対応 Raspberry Pi PicoでBASICプログラミング MachiKania type PU</a>   
+ソースプログラム等は<a href="https://github.com/machikania/phyllosoma">こちら</a>で液晶搭載版のMachiKania type Pと共通ページに公開しています。  
+  
+This page was released as a test version of MachiKania type PU, which was still under development. On December 28, 2024, the official version of MachiKania type PU was released below, so this repository will no longer function.
 
-```console
-USEGRAPHIC 2
-```
-MachiKaniaシリーズでのBASICプログラム作成は以下の資料を参考にしてください。MachiKania type PUに関する記載はありませんので、MachiKania type Pを参考にしてください。  
-<a href="http://www.ze.em-net.ne.jp/~kenken/machikania/machikania-guide.pdf" target="_blank">入門MachiKania </a>
+<a href="http://www.ze.em-net.ne.jp/~kenken/machikania/typepu.html">MachiKania type PU</a>
+
+Source programs, etc. are published on the same page as the LCD-equipped version <a href="https://github.com/machikania/phyllosoma">MachiKania type P</a> here.
 
 ## MachiKania RP2040 Video
 MachiKania RP2040 Video is a BASIC compiler for ARMv6-M, especially for Raspberry Pi Pico, Pico W, XIAO RP2040, Tiny 2040 and RP2040-Zero.  
